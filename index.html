@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gestión de Proyectos · Sílabo interactivo · UTPL</title>
+  <meta name="description" content="Cronograma semanal, lecturas, tutorías y lista de tareas de la asignatura Gestión de Proyectos (ADMI_5077), UTPL, octubre 2026 – febrero 2027.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <a class="saltar" href="#principal">Saltar al contenido</a>
+
+  <header class="cabecera">
+    <div class="envoltura cabecera__fila">
+      <img class="cabecera__logo" src="img/logo_UTPL.jpg" alt="Universidad Técnica Particular de Loja" width="140" height="84">
+      <div>
+        <p class="cabecera__carrera" id="carrera">Computación · Noveno nivel</p>
+        <h1 class="cabecera__titulo" id="titulo-curso">Gestión de Proyectos</h1>
+        <p class="cabecera__meta" id="meta-curso">ADMI_5077 · Octubre 2026 – Febrero 2027</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navegacion" aria-label="Secciones del sitio">
+    <ul class="envoltura navegacion__lista">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#cronograma">Cronograma</a></li>
+      <li><a href="#lecturas">Lecturas</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="#tareas">Mis tareas</a></li>
+      <li><a href="#evaluacion">Evaluación</a></li>
+      <li><a href="#politicas">Políticas</a></li>
+    </ul>
+  </nav>
+
+  <main id="principal" class="envoltura" tabindex="-1">
+    <noscript>
+      <p class="aviso aviso--alerta">Este sitio necesita JavaScript para mostrar el cronograma. Si no puede activarlo, consulte el plan docente en el aula virtual.</p>
+    </noscript>
+
+    <!-- 1 · LAS TRES TAREAS -->
+    <section id="inicio" class="inicio" aria-labelledby="t-inicio">
+      <h2 id="t-inicio" class="oculto">Inicio</h2>
+
+      <article class="panel panel--proximo" aria-labelledby="t-proximo">
+        <h3 id="t-proximo" class="panel__titulo">Lo próximo</h3>
+        <div id="proximo" aria-live="polite"><p>Cargando…</p></div>
+      </article>
+
+      <div class="inicio__par">
+        <article class="panel" aria-labelledby="t-buscar">
+          <h3 id="t-buscar" class="panel__titulo">Buscar una lectura</h3>
+          <label for="buscar-rapido" class="etiqueta">Escriba un título, autor o «semana 2»</label>
+          <input id="buscar-rapido" class="campo" type="search" autocomplete="off" placeholder="Ej.: PMBOK, Scrum, semana 6">
+          <ul id="resultados-rapidos" class="lista-recursos lista-recursos--compacta" aria-live="polite"></ul>
+          <p class="panel__pie"><a href="#lecturas">Ver todas las lecturas y recursos</a></p>
+        </article>
+
+        <article class="panel" aria-labelledby="t-contacto-rapido">
+          <h3 id="t-contacto-rapido" class="panel__titulo">Contactar al docente</h3>
+          <div id="contacto-rapido"></div>
+          <p class="panel__pie"><a href="#contacto">Horario completo y canales</a></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- LÍNEA DEL SEMESTRE -->
+    <section class="semestre" aria-labelledby="t-semestre">
+      <h2 id="t-semestre" class="seccion__titulo">El semestre de un vistazo</h2>
+      <p class="seccion__intro">Cada barra es una semana. Toque una para ir a su detalle.</p>
+      <div id="linea-semestre" class="linea"></div>
+      <ul class="leyenda" aria-label="Leyenda">
+        <li><span class="leyenda__marca leyenda__marca--pasada"></span>Semana pasada</li>
+        <li><span class="leyenda__marca leyenda__marca--actual"></span>Semana actual</li>
+        <li><span class="leyenda__marca leyenda__marca--evaluacion"></span>Con evaluación</li>
+      </ul>
+    </section>
+
+    <!-- 2 · CRONOGRAMA -->
+    <section id="cronograma" aria-labelledby="t-cronograma">
+      <h2 id="t-cronograma" class="seccion__titulo">Cronograma semanal</h2>
+      <p class="seccion__intro">Cada semana: 2 horas en contacto con el docente, 1 hora práctica y 3 horas de trabajo autónomo. Fechas en hora de Ecuador.</p>
+      <div class="filtros" role="group" aria-label="Mostrar bimestre">
+        <button type="button" class="filtro" data-bimestre="todos" aria-pressed="true">Todo el semestre</button>
+        <button type="button" class="filtro" data-bimestre="1" aria-pressed="false">Primer bimestre</button>
+        <button type="button" class="filtro" data-bimestre="2" aria-pressed="false">Segundo bimestre</button>
+      </div>
+      <div id="semanas"></div>
+    </section>
+
+    <!-- 3 · LECTURAS -->
+    <section id="lecturas" aria-labelledby="t-lecturas">
+      <h2 id="t-lecturas" class="seccion__titulo">Lecturas y recursos</h2>
+      <p class="seccion__intro">Cada recurso indica cómo se accede. Los textos con licencia se consultan en la biblioteca UTPL o en el aula virtual; aquí solo hay enlaces autorizados.</p>
+      <div class="buscador">
+        <label for="buscar" class="etiqueta">Buscar en la bibliografía</label>
+        <input id="buscar" class="campo" type="search" autocomplete="off" placeholder="Título, autor o semana">
+      </div>
+      <div class="filtros" role="group" aria-label="Filtrar por tipo de acceso" id="filtros-acceso"></div>
+      <p id="conteo-recursos" class="conteo" aria-live="polite"></p>
+      <ul id="lista-recursos" class="lista-recursos"></ul>
+    </section>
+
+    <!-- 4 · CONTACTO -->
+    <section id="contacto" aria-labelledby="t-contacto">
+      <h2 id="t-contacto" class="seccion__titulo">Contacto y tutorías</h2>
+      <div id="contacto-completo" class="contacto"></div>
+    </section>
+
+    <!-- 5 · MIS TAREAS -->
+    <section id="tareas" aria-labelledby="t-tareas">
+      <h2 id="t-tareas" class="seccion__titulo">Mis tareas</h2>
+      <div class="aviso aviso--importante" role="note">
+        <p><strong>Marcar aquí no entrega la tarea.</strong> Las entregas se hacen en el aula virtual (EVA). Esta lista es solo un recordatorio personal: se guarda en este navegador, no la ve el docente, no crea un registro académico y se borra si limpia los datos del navegador o cambia de dispositivo.</p>
+      </div>
+      <div id="resumen-tareas" class="resumen-tareas"></div>
+      <div id="tareas-semana"></div>
+      <button type="button" id="reiniciar" class="boton boton--secundario">Borrar todas mis marcas</button>
+    </section>
+
+    <!-- 6 · EVALUACIÓN -->
+    <section id="evaluacion" aria-labelledby="t-evaluacion">
+      <h2 id="t-evaluacion" class="seccion__titulo">Evaluación y fechas importantes</h2>
+      <div id="fechas" class="fechas"></div>
+      <div id="pesos" class="pesos"></div>
+    </section>
+
+    <!-- 7 · POLÍTICAS -->
+    <section id="politicas" aria-labelledby="t-politicas">
+      <h2 id="t-politicas" class="seccion__titulo">Políticas oficiales</h2>
+      <p class="seccion__intro">Texto copiado sin cambios del plan docente aprobado. El documento oficial está en el aula virtual y prevalece sobre este sitio.</p>
+      <div id="lista-politicas"></div>
+      <details class="desplegable">
+        <summary>Resultados de aprendizaje de la asignatura</summary>
+        <ol id="resultados"></ol>
+      </details>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <div class="envoltura">
+      <p id="fuente"></p>
+      <p>Este sitio no recoge datos personales. Para entregas, calificaciones y avisos oficiales use el aula virtual de la UTPL.</p>
+    </div>
+  </footer>
+
+  <script src="datos/silabo.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
