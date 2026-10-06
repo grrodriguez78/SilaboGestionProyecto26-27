@@ -9,14 +9,303 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/estilo.css">
+  <style>
+/* Gestión de Proyectos · UTPL — estilos
+   Paleta institucional: azul UTPL + amarillo de acento. Una sola familia (Atkinson Hyperlegible),
+   diseñada para baja visión. Unidades relativas: el texto se amplía al 200 % sin solapamientos. */
+
+:root {
+  --azul: #0b3c61;
+  --azul-hondo: #072a45;
+  --amarillo: #f5b800;
+  --fondo: #f3f6f9;
+  --superficie: #ffffff;
+  --tinta: #13202b;
+  --tenue: #4b5a67;
+  --linea: #d2dbe3;
+  --hecho: #23714a;
+  --alerta-fondo: #fff4d1;
+  --alerta-borde: #c48f00;
+  --foco: #1a73c9;
+  --radio: .5rem;
+  --sombra: 0 1px 0 rgba(11, 60, 97, .08);
+  --fuente: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light dark;
+}
+html { scroll-padding-top: calc(4rem + env(safe-area-inset-top, 0px)); scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --azul: #8cc4f0;
+    --azul-hondo: #0a2236;
+    --amarillo: #f5c43a;
+    --fondo: #0e1720;
+    --superficie: #15212c;
+    --tinta: #e6edf3;
+    --tenue: #a8b6c2;
+    --linea: #2b3b49;
+    --hecho: #6fcf97;
+    --alerta-fondo: #3a2f0c;
+    --alerta-borde: #d9a521;
+    --foco: #8cc4f0;
+  }
+}
+:root[data-theme="dark"] {
+  --azul: #8cc4f0; --azul-hondo: #0a2236; --amarillo: #f5c43a; --fondo: #0e1720; --superficie: #15212c;
+  --tinta: #e6edf3; --tenue: #a8b6c2; --linea: #2b3b49; --hecho: #6fcf97; --alerta-fondo: #3a2f0c;
+  --alerta-borde: #d9a521; --foco: #8cc4f0;
+}
+
+*, *::before, *::after { box-sizing: inherit; }
+body {
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--fuente);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  overflow-wrap: break-word;
+}
+img { max-width: 100%; height: auto; }
+a { color: var(--azul); text-underline-offset: .18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; border-radius: 3px; }
+p, ul, ol { margin: 0 0 .75rem; }
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5rem; }
+
+.envoltura { width: 100%; max-width: 62rem; margin: 0 auto; padding: 0 1rem; }
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.saltar {
+  position: absolute; left: 1rem; top: -4rem; z-index: 10;
+  background: var(--amarillo); color: #13202b; padding: .6rem 1rem; border-radius: var(--radio); font-weight: 700;
+}
+.saltar:focus { top: calc(.5rem + env(safe-area-inset-top, 0px)); }
+
+/* Cabecera */
+.cabecera { background: #0b3c61; color: #fff; border-bottom: 4px solid #f5b800; }
+.cabecera__fila { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.cabecera__logo { width: 5.5rem; height: auto; border-radius: .25rem; flex-shrink: 0; }
+.cabecera__carrera { margin: 0; font-size: .9375rem; color: #cfe0ee; }
+.cabecera__fila > div { min-width: 0; flex: 1 1 12rem; }
+.cabecera__titulo { overflow-wrap: anywhere; font-size: clamp(1.6rem, 5vw, 2.4rem); margin: .1rem 0 .15rem; letter-spacing: -.01em; }
+.cabecera__meta { margin: 0; color: #cfe0ee; font-size: .9375rem; }
+
+/* Navegación: envuelve en varias líneas, nunca desplaza la página */
+.navegacion {
+  position: relative; z-index: 5;
+  background: var(--superficie); border-bottom: 1px solid var(--linea);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.navegacion__lista { display: flex; flex-wrap: wrap; gap: .25rem .9rem; list-style: none; margin: 0 auto; padding-top: .55rem; padding-bottom: .55rem; }
+.navegacion__lista a { text-decoration: none; font-weight: 700; padding: .3rem 0; display: inline-block; }
+.navegacion__lista a:hover { text-decoration: underline; }
+
+@media (min-width: 46rem) { .navegacion { position: sticky; top: 0; } }
+main { padding-top: 1.5rem; padding-bottom: 2rem; }
+main:focus { outline: none; }
+section { margin-bottom: 2.75rem; }
+.seccion__titulo { font-size: 1.5rem; color: var(--tinta); border-left: 6px solid var(--amarillo); padding-left: .6rem; }
+.seccion__intro { color: var(--tenue); max-width: 46rem; }
+
+/* Paneles de las tres tareas */
+.inicio { display: grid; gap: 1rem; }
+.inicio__par { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); }
+.panel {
+  background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio);
+  padding: 1.1rem 1.15rem; box-shadow: var(--sombra); min-width: 0;
+}
+.panel__titulo { font-size: 1.125rem; color: var(--azul); margin-bottom: .6rem; }
+.panel__pie { margin: .75rem 0 0; font-weight: 700; }
+.panel--proximo { border-top: 6px solid var(--azul); }
+
+.proximo__semana { font-size: clamp(1.75rem, 6vw, 2.5rem); font-weight: 700; line-height: 1.05; margin: 0 0 .25rem; }
+.proximo__semana small { font-size: .5em; font-weight: 400; color: var(--tenue); }
+.proximo__unidad { font-size: 1.125rem; margin-bottom: .9rem; }
+.proximo__rejilla { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.dato { border-left: 3px solid var(--linea); padding-left: .7rem; }
+.dato--clave { border-left-color: var(--amarillo); }
+.dato__rotulo { display: block; font-size: .875rem; color: var(--tenue); }
+.dato__valor { display: block; font-weight: 700; }
+
+.etiqueta { display: block; font-size: .9375rem; color: var(--tenue); margin-bottom: .3rem; }
+.campo {
+  width: 100%; font: inherit; color: var(--tinta); background: var(--fondo);
+  border: 2px solid var(--linea); border-radius: var(--radio); padding: .6rem .75rem;
+}
+.campo:focus { border-color: var(--foco); }
+
+/* Línea del semestre: el elemento distintivo, como una barra de Gantt */
+.linea { display: grid; grid-template-columns: repeat(auto-fill, minmax(max(4.6rem, 22%), 1fr)); gap: .3rem .25rem; }
+@media (min-width: 46rem) { .linea { grid-template-columns: repeat(16, minmax(0, 1fr)); } }
+.linea__semana {
+  display: flex; flex-direction: column; justify-content: flex-end; gap: .2rem;
+  min-height: 3.6rem; padding: .3rem .2rem; text-decoration: none; text-align: center;
+  color: var(--tinta); background: var(--superficie); border: 1px solid var(--linea); border-radius: .3rem;
+  font-size: .8125rem; position: relative;
+}
+.linea__semana strong { font-size: 1rem; }
+.linea__barra { display: block; height: .4rem; border-radius: 2px; background: var(--linea); }
+.linea__semana--pasada .linea__barra { background: var(--tenue); }
+.linea__semana--actual { border: 2px solid var(--azul); }
+.linea__semana--actual .linea__barra { background: var(--azul); }
+.linea__semana--evaluacion::before {
+  content: ""; position: absolute; top: .3rem; right: .3rem; width: .55rem; height: .55rem;
+  background: var(--amarillo); transform: rotate(45deg);
+}
+.linea__bimestre { grid-column: 1 / -1; font-size: .875rem; color: var(--tenue); margin: .2rem 0 0; }
+@media (min-width: 46rem) {
+  .linea__bimestre { grid-column: span 8; }
+  .linea__bimestre--2 { grid-column: 9 / span 8; grid-row: 1; }
+  .linea__bimestre--1 { grid-row: 1; }
+}
+.leyenda { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; list-style: none; padding: 0; margin-top: .6rem; font-size: .875rem; color: var(--tenue); }
+.leyenda__marca { display: inline-block; width: 1rem; height: .45rem; border-radius: 2px; margin-right: .35rem; vertical-align: middle; background: var(--linea); }
+.leyenda__marca--pasada { background: var(--tenue); }
+.leyenda__marca--actual { background: var(--azul); }
+.leyenda__marca--evaluacion { width: .55rem; height: .55rem; background: var(--amarillo); transform: rotate(45deg); }
+
+/* Filtros */
+.filtros { display: flex; flex-wrap: wrap; gap: .5rem; margin: .5rem 0 1rem; }
+.filtro {
+  font: inherit; font-size: .9375rem; cursor: pointer; color: var(--tinta); background: var(--superficie);
+  border: 2px solid var(--linea); border-radius: 2rem; padding: .35rem .9rem;
+}
+.filtro[aria-pressed="true"] { background: var(--azul); border-color: var(--azul); color: var(--superficie); font-weight: 700; }
+
+/* Semanas: tarjetas en una columna, nunca tabla ancha */
+.semana {
+  background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio);
+  margin-bottom: .6rem; box-shadow: var(--sombra);
+}
+.semana[open] { border-color: var(--azul); }
+.semana--actual { border-left: 6px solid var(--azul); }
+.semana > summary {
+  cursor: pointer; list-style: none; padding: .85rem 1rem; display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto; gap: .2rem .9rem; align-items: center;
+}
+.semana > summary::-webkit-details-marker { display: none; }
+.semana > summary::after { content: "+"; font-size: 1.5rem; line-height: 1; color: var(--azul); grid-column: 3; grid-row: 1 / span 2; }
+.semana[open] > summary::after { content: "−"; }
+.semana__num { grid-row: 1 / span 2; font-size: 1.6rem; font-weight: 700; color: var(--azul); min-width: 2.2ch; text-align: center; }
+.semana__fechas { font-size: .9375rem; color: var(--tenue); }
+.semana__unidad { font-weight: 700; grid-column: 2; }
+.semana__marcas { grid-column: 2; display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .25rem; }
+.chip { font-size: .8125rem; padding: .1rem .55rem; border-radius: 1rem; border: 1px solid var(--linea); color: var(--tenue); background: var(--fondo); }
+.chip--evaluacion { background: var(--alerta-fondo); border-color: var(--alerta-borde); color: var(--tinta); font-weight: 700; }
+.chip--hoy { background: var(--azul); border-color: var(--azul); color: var(--superficie); font-weight: 700; }
+.chip--progreso { color: var(--hecho); border-color: currentColor; }
+
+.semana__cuerpo { padding: 0 1rem 1rem; border-top: 1px solid var(--linea); }
+.semana__cuerpo h4 { font-size: 1rem; margin-top: 1rem; color: var(--azul); }
+.semana__resultado { margin-top: .9rem; font-style: italic; color: var(--tenue); }
+.contenidos { padding-left: 1.1rem; }
+.bloques { display: grid; gap: .25rem 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.actividades { list-style: none; padding: 0; }
+.actividades li { padding: .5rem 0; border-bottom: 1px dashed var(--linea); }
+.actividades li:last-child { border-bottom: 0; }
+.actividad__titulo { font-weight: 700; }
+.actividad__detalle { color: var(--tenue); font-size: .9375rem; display: block; }
+.actividad__horas { font-size: .875rem; color: var(--tenue); }
+.actividad__recursos { font-size: .9375rem; margin-top: .25rem; }
+
+/* Casillas de la lista de tareas */
+.casilla { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .6rem; align-items: start; cursor: pointer; }
+.casilla input { width: 1.3rem; height: 1.3rem; margin-top: .15rem; accent-color: var(--hecho); cursor: pointer; }
+.casilla input:checked + span .actividad__titulo { text-decoration: line-through; color: var(--tenue); }
+
+/* Recursos */
+.buscador { max-width: 32rem; }
+.lista-recursos { list-style: none; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: .6rem; }
+.lista-recursos > li { min-width: 0; }
+.recurso__titulo, .recurso__meta { overflow-wrap: anywhere; }
+.recurso { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: .75rem .9rem; }
+.lista-recursos--compacta { margin-top: .6rem; gap: .4rem; }
+.lista-recursos--compacta .recurso { padding: .5rem .65rem; background: var(--fondo); }
+.recurso__titulo { font-weight: 700; display: block; }
+.recurso__meta { font-size: .9375rem; color: var(--tenue); display: block; }
+.recurso__nota { font-size: .875rem; color: var(--tenue); display: block; margin-top: .15rem; }
+.acceso { display: inline-block; font-size: .8125rem; font-weight: 700; padding: .05rem .5rem; border-radius: .25rem; margin: .25rem .3rem 0 0; border: 1px solid; }
+.acceso--abierto { color: var(--hecho); }
+.acceso--biblioteca { color: var(--azul); }
+.acceso--eva { color: var(--tenue); }
+.acceso--verificar { color: var(--tinta); background: var(--alerta-fondo); border-color: var(--alerta-borde); }
+.conteo { color: var(--tenue); font-size: .9375rem; }
+.vacio { color: var(--tenue); font-style: italic; }
+
+/* Contacto */
+.contacto { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.horario { list-style: none; padding: 0; margin: 0; }
+.horario li { padding: .45rem 0; border-bottom: 1px dashed var(--linea); }
+.horario li:last-child { border-bottom: 0; }
+.horario__tipo { font-weight: 700; }
+
+/* Avisos */
+.aviso { border-radius: var(--radio); padding: .85rem 1rem; margin-bottom: 1rem; border: 2px solid var(--alerta-borde); background: var(--alerta-fondo); }
+.aviso p:last-child { margin-bottom: 0; }
+
+.boton {
+  font: inherit; font-weight: 700; cursor: pointer; border-radius: var(--radio); padding: .6rem 1rem;
+  border: 2px solid var(--azul); background: var(--azul); color: var(--superficie);
+}
+.boton--secundario { background: transparent; color: var(--azul); }
+
+.resumen-tareas { margin-bottom: 1rem; }
+.progreso { height: .6rem; background: var(--linea); border-radius: 1rem; overflow: hidden; margin: .4rem 0 .2rem; }
+.progreso__barra { height: 100%; background: var(--hecho); width: 0; transition: width .3s; }
+@media (prefers-reduced-motion: reduce) { .progreso__barra { transition: none; } }
+
+/* Evaluación: listas, no tablas anchas */
+.fechas { list-style: none; padding: 0; display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); margin-bottom: 1.5rem; }
+.fecha { background: var(--superficie); border: 1px solid var(--linea); border-left: 5px solid var(--amarillo); border-radius: var(--radio); padding: .6rem .8rem; }
+.fecha--pasada { opacity: .7; border-left-color: var(--linea); }
+.fecha__actividad { font-weight: 700; display: block; }
+.fecha__rango { font-size: .9375rem; color: var(--tenue); }
+.pesos { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+.pesos h3 { font-size: 1.125rem; color: var(--azul); }
+.componente { margin-bottom: .9rem; }
+.componente__nombre { font-weight: 700; display: flex; justify-content: space-between; gap: .5rem; border-bottom: 2px solid var(--linea); padding-bottom: .2rem; margin-bottom: .3rem; }
+.componente ul { list-style: none; padding: 0; margin: 0; }
+.componente li { display: flex; justify-content: space-between; gap: .75rem; padding: .2rem 0; font-size: .9375rem; }
+.componente li span:last-child { white-space: nowrap; font-weight: 700; }
+.componente small { display: block; color: var(--tenue); font-size: .8125rem; }
+
+/* Políticas */
+.politica { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: 1rem; margin-bottom: .75rem; }
+.politica h3 { font-size: 1.0625rem; color: var(--azul); }
+.politica blockquote { margin: 0; max-width: 46rem; }
+.desplegable { background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); padding: .75rem 1rem; }
+.desplegable summary { cursor: pointer; font-weight: 700; color: var(--azul); }
+.desplegable ol { margin-top: .75rem; }
+
+.pie { background: var(--azul-hondo); color: #d6e3ee; font-size: .9375rem; padding: 1.25rem 0; }
+.pie p { margin: 0 0 .4rem; max-width: 46rem; }
+
+@media print {
+  .navegacion, .filtros, .buscador, #tareas, .saltar, .semestre { display: none; }
+  .semana { break-inside: avoid; }
+  .semana__cuerpo { display: block; }
+}
+
+/* Texto ampliado: que nada fuerce desplazamiento lateral */
+.chip { max-width: 100%; overflow-wrap: anywhere; }
+.componente li span:first-child, .componente__nombre span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.pesos .panel, .contacto .panel, .fechas .fecha { min-width: 0; }
+
+</style>
 </head>
 <body>
   <a class="saltar" href="#principal">Saltar al contenido</a>
 
   <header class="cabecera">
     <div class="envoltura cabecera__fila">
-      <img class="cabecera__logo" src="img/logo_UTPL.jpg" alt="Universidad Técnica Particular de Loja" width="140" height="84">
+      <img class="cabecera__logo" src="data:image/jpeg;base64,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" alt="Universidad Técnica Particular de Loja" width="140" height="84">
       <div>
         <p class="cabecera__carrera" id="carrera">Computación · Noveno nivel</p>
         <h1 class="cabecera__titulo" id="titulo-curso">Gestión de Proyectos</h1>
@@ -148,7 +437,959 @@
     </div>
   </footer>
 
-  <script src="datos/silabo.js"></script>
-  <script src="js/app.js"></script>
+  <!-- ===================== INICIO DE DATOS ===================== -->
+<script>
+/*
+  ÚNICA FUENTE DE CONTENIDO DEL SITIO
+  ------------------------------------
+  Para actualizar fechas, enlaces o actividades durante el semestre, edite SOLO este bloque
+  (entre «INICIO DE DATOS» y «FIN DE DATOS») y vuelva a publicar. El diseño no se toca.
+
+  Fuente: Plan docente ADMI_5077 Gestión de Proyectos, período OCT/2026 - FEB/2027 (UTPL).
+  Zona horaria de todas las fechas: hora de Ecuador continental (UTC-5).
+*/
+window.SILABO = {
+  "version": "1.0.0",
+  "actualizado": "2026-10-05",
+  "fuente": "Plan docente de la asignatura Gestión de Proyectos (ADMI_5077), período OCT/2026 - FEB/2027, aprobado por la Dirección de Carrera de Computación.",
+
+  "curso": {
+    "nombre": "Gestión de Proyectos",
+    "codigo": "ADMI_5077",
+    "universidad": "Universidad Técnica Particular de Loja",
+    "facultad": "Ingenierías y Arquitectura",
+    "carrera": "Computación",
+    "nivel": "Noveno",
+    "periodo": "Octubre 2026 – Febrero 2027",
+    "modalidad": "Presencial",
+    "paralelo": "A",
+    "creditos": 2,
+    "horas": { "contacto": 32, "practico": 16, "autonomo": 48, "total": 96 },
+    "prerequisito": "Ingeniería de Requisitos",
+    "zonaHoraria": "hora de Ecuador (UTC-5)"
+  },
+
+  "docentes": [
+    {
+      "nombre": "Marco Patricio Abad Espinoza",
+      "rol": "Docente del paralelo A",
+      "titulo": "Máster en Ingeniería de Software y Sistemas Informáticos · PMP",
+      "correo": "mpabad@utpl.edu.ec"
+    },
+    {
+      "nombre": "Germania del Rocío Rodríguez Morales",
+      "rol": "Docente de la asignatura",
+      "titulo": "Doctora en Ciencias y Tecnologías de la Computación para Smart Cities",
+      "correo": "grrodriguez@utpl.edu.ec"
+    }
+  ],
+
+  "horario": [
+    { "dia": 1, "diaNombre": "Lunes", "inicio": "11:00", "fin": "12:00", "tipo": "Clase", "lugar": "Aula 10402" },
+    { "dia": 1, "diaNombre": "Lunes", "inicio": "12:00", "fin": "13:00", "tipo": "Práctica", "lugar": "Aula 10402" },
+    { "dia": 2, "diaNombre": "Martes", "inicio": "12:00", "fin": "13:00", "tipo": "Tutoría", "lugar": "Zoom (enlace en el aula virtual)" }
+  ],
+
+  "canalOficial": "Aula virtual (EVA) de la asignatura y correo institucional @utpl.edu.ec",
+
+  "resultadosAprendizaje": [
+    "Identifica las fuentes de influencia que configuran las restricciones del proyecto y las considera al momento de organizar el proyecto.",
+    "Describe las diferencias entre los procesos de desarrollo y los procesos de gestión de proyectos combinándolos para obtener planes de proyecto realistas.",
+    "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+    "Identifica la metodología de gestión de proyectos a utilizar en base a las características específicas de un problema."
+  ],
+
+  "recursos": [
+    { "id": "pmbok7", "titulo": "Guía de los fundamentos para la dirección de proyectos (PMBOK), 7.ª edición", "autor": "Project Management Institute (2021)", "tipo": "Bibliografía básica", "acceso": "biblioteca", "url": "", "semanas": [1,3,5,6,9,10,11,12], "nota": "Disponible en la biblioteca UTPL, física y virtual." },
+    { "id": "pmbok6", "titulo": "Guía de los fundamentos para la dirección de proyectos (PMBOK), 6.ª edición, capítulo 3", "autor": "Project Management Institute", "tipo": "Lectura de la semana", "acceso": "eva", "url": "", "semanas": [1], "nota": "Edición citada en la actividad de la semana 1. Consulte el aula virtual." },
+    { "id": "lopez", "titulo": "Administración de proyectos: la clave para la coordinación efectiva de actividades y recursos, capítulo 2", "autor": "Adán López Miranda", "tipo": "Lectura de la semana", "acceso": "eva", "url": "", "semanas": [1], "nota": "Consulte el aula virtual." },
+    { "id": "guiadidactica", "titulo": "Guía didáctica de Gestión de Proyectos", "autor": "UTPL", "tipo": "Lectura de la semana", "acceso": "eva", "url": "", "semanas": [2,6,7], "nota": "Unidad 3 (semana 2), unidad 5 (semana 6) y unidad 6 (semana 7)." },
+    { "id": "chaos", "titulo": "CHAOS Report – Standish Group", "autor": "Standish Group", "tipo": "Fuente de datos", "acceso": "abierto", "url": "https://www.standishgroup.com/", "semanas": [1], "nota": "Requiere crear una cuenta gratuita en el sitio." },
+    { "id": "prince2", "titulo": "Video sobre PRINCE2", "autor": "YouTube", "tipo": "Video", "acceso": "abierto", "url": "https://youtu.be/6SjDZTmQrUE", "semanas": [2], "nota": "" },
+    { "id": "iso21502", "titulo": "Norma ISO 21502:2020 – Gestión de proyectos", "autor": "ISO", "tipo": "Norma", "acceso": "verificar", "url": "", "semanas": [2], "nota": "Enlace en revisión de licencia. El docente publicará la vía de acceso autorizada en el aula virtual." },
+    { "id": "sutherland", "titulo": "Scrum: The Art of Doing Twice the Work in Half the Time", "autor": "Sutherland, J. (2014)", "tipo": "Lectura de la semana", "acceso": "eva", "url": "", "semanas": [13], "nota": "Consulte el aula virtual o la biblioteca." },
+    { "id": "scrumguide", "titulo": "The Scrum Guide", "autor": "Schwaber, K. y Sutherland, J. (2020)", "tipo": "Lectura de la semana", "acceso": "eva", "url": "", "semanas": [14], "nota": "Consulte el aula virtual." },
+    { "id": "manifiesto", "titulo": "Manifiesto Ágil y sus 12 principios", "autor": "Beck, K. et al. (2001)", "tipo": "Lectura de la semana", "acceso": "eva", "url": "", "semanas": [13], "nota": "Consulte el aula virtual." },
+    { "id": "mall", "titulo": "Fundamentals of software engineering", "autor": "Mall, R. (2022). PHI Learning", "tipo": "Bibliografía complementaria", "acceso": "biblioteca", "url": "", "semanas": [], "nota": "" },
+    { "id": "wysocki", "titulo": "Effective project management: traditional, agile, extreme, hybrid", "autor": "Wysocki, R. K. (2019). Wiley", "tipo": "Bibliografía complementaria", "acceso": "biblioteca", "url": "https://visorweb.utpl.edu.ec/reader/effective-project-management-traditionalagileextreme-hybrid", "semanas": [], "nota": "Visor de la biblioteca virtual UTPL; requiere credenciales institucionales." },
+    { "id": "buchtik", "titulo": "Secrets to mastering the WBS in real-world projects", "autor": "Buchtik, L. (2013). PMI", "tipo": "Bibliografía complementaria", "acceso": "biblioteca", "url": "", "semanas": [6], "nota": "" },
+    { "id": "rea1", "titulo": "Project Management", "autor": "South Puget Sound Community College (Pressbooks)", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://spscc.pressbooks.pub/projectmanagement/", "semanas": [], "nota": "" },
+    { "id": "rea2", "titulo": "Project Management Fundamentals", "autor": "Open Textbook Library", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://open.umn.edu/opentextbooks/textbooks/1914", "semanas": [], "nota": "" },
+    { "id": "rea3", "titulo": "Project Management from Simple to Complex", "autor": "Open Textbook Library", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://open.umn.edu/opentextbooks/textbooks/project-management-from-simple-to-complex", "semanas": [], "nota": "" },
+    { "id": "rea4", "titulo": "Technical Project Management in Living and Geometric Order, 3.ª edición", "autor": "Open Textbook Library", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://open.umn.edu/opentextbooks/textbooks/technical-project-management-in-living-and-geometric-order", "semanas": [], "nota": "" },
+    { "id": "rea5", "titulo": "Project Execution Plan", "autor": "TU Delft OpenCourseWare", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://ocw.tudelft.nl/course-lectures/7-2-1-project-execution-plan/", "semanas": [16], "nota": "" },
+    { "id": "rea6", "titulo": "Essentials of Project Management, capítulo 14: Agile PM", "autor": "eCampusOntario (Pressbooks)", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://ecampusontario.pressbooks.pub/essentialsofprojectmanagement/part/chapter14-agile-pm/", "semanas": [13,14], "nota": "" },
+    { "id": "rea7", "titulo": "What is Agile?", "autor": "Kirkwood Community College (Pressbooks)", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://kirkwood.pressbooks.pub/projectmanagementbasics/chapter/what-is-agile/", "semanas": [13], "nota": "" },
+    { "id": "rea8", "titulo": "Leveraging Artificial Intelligence in Project Management: A Systematic Review of Applications, Challenges, and Future Directions", "autor": "Computers (MDPI)", "tipo": "Recurso educativo abierto", "acceso": "abierto", "url": "https://www.mdpi.com/2073-431X/14/2/66", "semanas": [15], "nota": "" }
+  ],
+
+  "semanas": [
+    {
+      "n": 1, "bimestre": 1, "desde": "2026-10-05", "hasta": "2026-10-11",
+      "unidad": "Unidad 1: Introducción a la gestión de proyectos",
+      "resultado": "Describe las diferencias entre los procesos de desarrollo y los procesos de gestión de proyectos combinándolos para obtener planes de proyecto realistas.",
+      "contenidos": [
+        "1.1 ¿Qué es un proyecto? Características y ejemplos en TI.",
+        "1.2 Diferencia entre gestión de proyectos, programas y portafolios.",
+        "1.3 El rol del gestor de proyectos (Project Manager) en la industria tecnológica.",
+        "1.4 Introducción a los ciclos de vida de desarrollo de software (SDLC).",
+        "1.5 Estándares y marcos de trabajo para la gestión de proyectos: ISO 21502:2020, PMBOK, PRINCE2."
+      ],
+      "contacto": [
+        { "t": "Presentación del plan docente y de la asignatura", "d": "Organización del aprendizaje, plan docente y recursos. Charla introductoria a los fundamentos e importancia de la dirección de proyectos. Discusión grupal sobre experiencias previas en proyectos." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s1p1", "t": "Formación de equipos y lluvia de ideas para el proyecto del curso", "d": "Identifique oportunidades de caso para el proyecto del curso y organícese en equipo." }
+      ],
+      "autonomo": [
+        { "id": "s1a1", "t": "Resumen y mapa mental sobre la naturaleza de los proyectos", "d": "Lea el capítulo 2 de López Miranda y el apartado 1.2 del PMBOK 7.ª edición; elabore un resumen y un mapa mental.", "h": 1, "recursos": ["lopez","pmbok7"] },
+        { "id": "s1a2", "t": "Análisis del CHAOS Report", "d": "Cree una cuenta en Standish Group, obtenga el CHAOS Report y analice tipos de proyectos, enfoques y factores de éxito o fracaso.", "h": 1, "recursos": ["chaos"] },
+        { "id": "s1a3", "t": "Ensayo sobre el rol del director de proyecto (mínimo 3 páginas)", "d": "Lea el capítulo 3 del PMBOK 6.ª edición y resuma los aspectos clave del rol del director del proyecto.", "h": 1, "recursos": ["pmbok6"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 2, "bimestre": 1, "desde": "2026-10-12", "hasta": "2026-10-18",
+      "unidad": "Unidad 1: Introducción a la gestión de proyectos",
+      "resultado": "Identifica la metodología de gestión de proyectos a utilizar en base a las características específicas de un problema.",
+      "contenidos": [
+        "1.4 Ciclo de vida del proyecto vs. ciclo de vida del producto.",
+        "1.5 Modelos de desarrollo de software: cascada (waterfall), incremental, espiral.",
+        "1.6 Integración de los procesos de gestión en el SDLC.",
+        "1.7 Factores ambientales de la empresa y activos de los procesos de la organización.",
+        "1.8 Estilos organizacionales y su influencia en la ejecución de proyectos."
+      ],
+      "contacto": [
+        { "t": "Taller: cómo la cultura organizacional afecta a un proyecto", "d": "Cada grupo recibe escenarios distintos para establecer cómo la cultura organizacional afecta el desarrollo de un proyecto." },
+        { "t": "Análisis comparativo de modelos de desarrollo", "d": "A partir de las características de los distintos enfoques, se determina la mejor forma de trabajar." },
+        { "t": "Tutoría virtual", "d": "Para presentarse a la tutoría debe tener lista su actividad individual." }
+      ],
+      "practico": [
+        { "id": "s2p1", "t": "Selección final del tema del proyecto", "d": "Definición de roles de los integrantes del equipo e inicio de la investigación de la problemática a resolver." }
+      ],
+      "autonomo": [
+        { "id": "s2a1", "t": "Características y escenarios de aplicación de los estándares de gestión", "d": "Lea la unidad 3 de la guía didáctica, analice el video sobre PRINCE2 y el documento ISO 21502.", "h": 1.5, "recursos": ["guiadidactica","prince2","iso21502"] },
+        { "id": "s2a2", "t": "Análisis de escenarios de ciclos de vida de proyectos", "d": "Individualmente, determine el ciclo de vida y las fases más adecuadas para cada escenario publicado en el aula virtual.", "h": 1.5, "recursos": [] }
+      ],
+      "evaluaciones": ["Actividad presencial"]
+    },
+    {
+      "n": 3, "bimestre": 1, "desde": "2026-10-19", "hasta": "2026-10-25",
+      "unidad": "Unidad 2: Procesos de inicio del proyecto",
+      "resultado": "Conoce las principales metodologías para la gestión de proyectos.",
+      "contenidos": [
+        "2.1 Proceso de inicio del proyecto.",
+        "2.2 Identificación y análisis de stakeholders.",
+        "2.3 Técnicas para la recopilación de requisitos iniciales.",
+        "2.4 Elaboración del caso de negocio (Business Case).",
+        "2.5 Selección y priorización de proyectos mediante métodos financieros: valor ganado, ROI."
+      ],
+      "contacto": [
+        { "t": "Identificación de los interesados de un proyecto", "d": "Explicación sobre la identificación y creación de un mapa de stakeholders para un caso de estudio." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s3p1", "t": "Mapa de interesados y objetivos SMART del proyecto", "d": "Identifique y analice los stakeholders clave de su proyecto y defina sus objetivos SMART." }
+      ],
+      "autonomo": [
+        { "id": "s3a1", "t": "Lectura sobre la importancia de los interesados", "d": "Guía de los fundamentos para la dirección de proyectos, capítulo 2.", "h": 1.25, "recursos": ["pmbok7"] },
+        { "id": "s3a2", "t": "Ejercicio de casos de negocio (Business Case)", "d": "Resuelva los casos de negocio planteados en el aula virtual.", "h": 1.75, "recursos": [] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 4, "bimestre": 1, "desde": "2026-10-26", "hasta": "2026-11-01",
+      "unidad": "Unidad 2: Procesos de inicio de un proyecto",
+      "resultado": "Identifica las fuentes de influencia que configuran las restricciones del proyecto y las considera al momento de organizar el proyecto.",
+      "contenidos": [
+        "2.5 Definición, propósito y componentes del acta de constitución del proyecto.",
+        "2.6 Definición de objetivos, alcance y entregables a alto nivel.",
+        "2.7 Establecimiento de la autoridad del Project Manager.",
+        "2.8 Criterios de éxito del proyecto."
+      ],
+      "contacto": [
+        { "t": "Elaboración del acta de constitución del proyecto", "d": "Con los criterios y plantillas dadas, integre los elementos del acta de constitución." },
+        { "t": "Evaluación parcial 1 del primer bimestre", "d": "Contenidos de la primera unidad." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s4p1", "t": "Primera versión del acta de constitución del proyecto", "d": "Cada grupo redacta y entrega la versión inicial del acta con los formatos dados." }
+      ],
+      "autonomo": [
+        { "id": "s4a1", "t": "Comparación de plantillas de Project Charter", "d": "Investigue plantillas de Project Charter, compárelas y finalice el entregable del proyecto.", "h": 3, "recursos": [] }
+      ],
+      "evaluaciones": ["Prueba parcial", "Taller grupal"]
+    },
+    {
+      "n": 5, "bimestre": 1, "desde": "2026-11-02", "hasta": "2026-11-08",
+      "unidad": "Unidad 3: Planificación – fases y áreas de conocimiento del PMBOK",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "3.1 Visión general de los 5 grupos de procesos y 10 áreas de conocimiento.",
+        "3.2 El proceso de planificación y su naturaleza iterativa.",
+        "3.3 Desarrollo del plan para la dirección del proyecto.",
+        "3.4 Gestión de la integración del proyecto."
+      ],
+      "contacto": [
+        { "t": "Mapa mental grupal de las áreas de conocimiento", "d": "Elaboración del mapa mental y discusión sobre cómo se interrelacionan las áreas de conocimiento con los grupos de procesos." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s5p1", "t": "Versión preliminar del plan de dirección del proyecto", "d": "Identifique los componentes y los planes subsidiarios del plan de dirección." }
+      ],
+      "autonomo": [
+        { "id": "s5a1", "t": "Grupos de procesos y áreas de conocimiento", "d": "Lectura de la guía PMBOK.", "h": 2.5, "recursos": ["pmbok7"] },
+        { "id": "s5a2", "t": "Cuestionario sobre el alcance del proyecto", "d": "Estudie la temática y desarrolle el cuestionario publicado en el aula virtual.", "h": 0.5, "recursos": [] }
+      ],
+      "evaluaciones": ["Laboratorios"]
+    },
+    {
+      "n": 6, "bimestre": 1, "desde": "2026-11-09", "hasta": "2026-11-15",
+      "unidad": "Unidad 3: Gestión del alcance",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "3.1 Planificar la gestión del alcance.",
+        "3.2 Recopilar requisitos: técnicas y herramientas.",
+        "3.3 Definir el alcance: enunciado del alcance del proyecto.",
+        "3.4 Crear la estructura de desglose del trabajo (EDT/WBS)."
+      ],
+      "contacto": [
+        { "t": "Taller: definición del alcance mediante una WBS", "d": "Explicación y creación de una WBS para un proyecto sencillo." },
+        { "t": "Tutoría", "d": "Acompañamiento en la elaboración de la WBS y la definición del alcance." }
+      ],
+      "practico": [
+        { "id": "s6p1", "t": "Enunciado del alcance y WBS del proyecto del curso", "d": "Recopile necesidades y elabore el enunciado del alcance y la WBS." }
+      ],
+      "autonomo": [
+        { "id": "s6a1", "t": "Organizar la WBS en herramientas como Miro", "d": "Vea tutoriales sobre cómo crear una WBS en Miro o Lucidchart.", "h": 1, "recursos": ["buchtik"] },
+        { "id": "s6a2", "t": "Proceso e implicaciones de la definición del alcance", "d": "Lea el PMBOK sobre definición del alcance y la unidad 5 de la guía didáctica.", "h": 2, "recursos": ["pmbok7","guiadidactica"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 7, "bimestre": 1, "desde": "2026-11-16", "hasta": "2026-11-22",
+      "unidad": "Unidad 4: Gestión del cronograma",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "4.1 Definir y secuenciar actividades.",
+        "4.2 Estimación de la duración de las actividades (PERT, análoga, paramétrica).",
+        "4.3 Desarrollo del cronograma: método de la ruta crítica (CPM).",
+        "4.4 Herramientas: diagramas de Gantt.",
+        "4.5 Control del cronograma."
+      ],
+      "contacto": [
+        { "t": "Ejercicios de elaboración del cronograma", "d": "Cálculo de ruta crítica y taller de diagrama de Gantt con ProjectLibre o similar." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la elaboración del presupuesto del proyecto." }
+      ],
+      "practico": [
+        { "id": "s7p1", "t": "Cronograma inicial del proyecto con ruta crítica", "d": "Cree el cronograma de su proyecto e identifique la ruta crítica." }
+      ],
+      "autonomo": [
+        { "id": "s7a1", "t": "Métodos y herramientas de elaboración del cronograma", "d": "Revise la unidad 6 de la guía didáctica, instale y explore una herramienta gratuita (ProjectLibre, Asana) y explique su funcionamiento.", "h": 3, "recursos": ["guiadidactica"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 8, "bimestre": 1, "desde": "2026-11-23", "hasta": "2026-11-29",
+      "unidad": "Unidad 5: Gestión de costos del proyecto",
+      "resultado": "Conoce las principales metodologías para la gestión de proyectos.",
+      "contenidos": [
+        "5.1 Planificar la gestión de costos.",
+        "5.2 Estimación de costos: tipos y técnicas.",
+        "5.3 Determinación del presupuesto y línea base de costos.",
+        "5.4 Introducción a la gestión del valor ganado (EVM)."
+      ],
+      "contacto": [
+        { "t": "Explicación en clase por parte del docente", "d": "" },
+        { "t": "Evaluación bimestral del primer bimestre", "d": "" },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s8p1", "t": "Presentación del proyecto del curso: alcance, cronograma y costos", "d": "Defina el alcance, el cronograma y los costos, y presente el proyecto." }
+      ],
+      "autonomo": [
+        { "id": "s8a1", "t": "Repaso: planificación del alcance, tiempo y costos", "d": "Repase los contenidos de las unidades 1 y 2, elabore un resumen y repase las actividades prácticas.", "h": 3, "recursos": [] }
+      ],
+      "evaluaciones": ["Examen bimestral", "Escenarios experimentales"]
+    },
+    {
+      "n": 9, "bimestre": 2, "desde": "2026-11-30", "hasta": "2026-12-06",
+      "unidad": "Unidad 6: La triple restricción y la gestión de la calidad",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "6.1 Análisis profundo de la triple restricción: alcance, tiempo y costo.",
+        "6.2 El concepto de calidad en proyectos de software (FURPS).",
+        "6.3 Planificación de la gestión de calidad: métricas y estándares.",
+        "6.4 Aseguramiento y control de calidad (QA/QC)."
+      ],
+      "contacto": [
+        { "t": "La triple restricción y su impacto en la calidad", "d": "Explicación en clase. Debate: ¿es posible optimizar las tres restricciones a la vez? Análisis de casos de tradeoffs." },
+        { "t": "Tutoría", "d": "" }
+      ],
+      "practico": [
+        { "id": "s9p1", "t": "Métricas de calidad del proyecto", "d": "Defina métricas de calidad para su proyecto de software (por ejemplo, tiempo de respuesta, tasa de errores)." }
+      ],
+      "autonomo": [
+        { "id": "s9a1", "t": "Modelos de calidad en proyectos de software", "d": "Lea sobre ISO 9001 y CMMI en el contexto de software, y el capítulo 8 de la guía PMBOK.", "h": 3, "recursos": ["pmbok7"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 10, "bimestre": 2, "desde": "2026-12-07", "hasta": "2026-12-13",
+      "unidad": "Unidad 7: Gestión de los recursos del proyecto",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "7.1 Planificar la gestión de recursos: roles y responsabilidades.",
+        "7.2 Estimar los recursos de las actividades.",
+        "7.3 Adquirir, desarrollar y dirigir el equipo del proyecto.",
+        "7.4 Modelos de desarrollo de equipos (Tuckman)."
+      ],
+      "contacto": [
+        { "t": "Tipos de recursos y cómo gestionarlos", "d": "Asignación de responsabilidades, taller de matriz RACI y dinámicas de grupo para simular las fases de desarrollo de equipos." },
+        { "t": "Tutoría", "d": "Participe en las tutorías." }
+      ],
+      "practico": [
+        { "id": "s10p1", "t": "Estructura de recursos del proyecto", "d": "Defina la estructura del equipo de su proyecto y asigne roles y responsabilidades." }
+      ],
+      "autonomo": [
+        { "id": "s10a1", "t": "Gestión de equipos remotos en proyectos de TI", "d": "Investigue los desafíos de gestionar equipos remotos. Lectura: guía PMBOK, capítulo 8.", "h": 3, "recursos": ["pmbok7"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 11, "bimestre": 2, "desde": "2026-12-14", "hasta": "2026-12-20",
+      "unidad": "Unidad 8: Gestión de las comunicaciones del proyecto",
+      "resultado": "Describe las diferencias entre los procesos de desarrollo y los procesos de gestión de proyectos combinándolos para obtener planes de proyecto realistas. Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "8.1 Importancia de la comunicación en los proyectos.",
+        "8.2 Planificar la gestión de las comunicaciones: ¿quién, qué, cuándo, cómo?",
+        "8.3 Gestionar y monitorear las comunicaciones.",
+        "8.4 Herramientas colaborativas (Slack, Teams, etc.)."
+      ],
+      "contacto": [
+        { "t": "El rol de las comunicaciones en los proyectos", "d": "Explicación del docente." },
+        { "t": "Plan de comunicaciones para un escenario dado", "d": "Creación del plan y discusión sobre barreras de comunicación." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s11p1", "t": "Plan de comunicaciones del proyecto", "d": "Elabore el plan de comunicaciones de su proyecto." }
+      ],
+      "autonomo": [
+        { "id": "s11a1", "t": "Métodos y herramientas de comunicación del proyecto", "d": "Lectura: guía PMBOK, capítulo 10.", "h": 3, "recursos": ["pmbok7"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 12, "bimestre": 2, "desde": "2026-12-21", "hasta": "2027-01-03",
+      "unidad": "Unidad 9: Gestión de los riesgos del proyecto",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "9.1 Planificar la gestión de riesgos.",
+        "9.2 Identificar riesgos: lluvia de ideas, análisis DAFO.",
+        "9.3 Análisis cualitativo y cuantitativo de riesgos.",
+        "9.4 Planificar la respuesta a los riesgos (mitigar, aceptar, transferir, evitar)."
+      ],
+      "contacto": [
+        { "t": "Taller: registro de riesgos", "d": "Simulación de análisis de impacto y probabilidad." },
+        { "t": "Evaluación parcial", "d": "Demuestre los resultados de aprendizaje sobre PMBOK." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s12p1", "t": "Plan de gestión de riesgos del proyecto", "d": "Realice el análisis de riesgos de su proyecto y cree el registro de riesgos inicial." }
+      ],
+      "autonomo": [
+        { "id": "s12a1", "t": "Impacto de los riesgos en proyectos de tecnología", "d": "Lectura: guía PMBOK, capítulo 11.", "h": 1.5, "recursos": ["pmbok7"] },
+        { "id": "s12a2", "t": "Riesgos más comunes en proyectos de software", "d": "Lea artículos sobre riesgos frecuentes y elabore una lista de los más comunes en nuestro entorno.", "h": 1.5, "recursos": [] }
+      ],
+      "evaluaciones": ["Prueba parcial"]
+    },
+    {
+      "n": 13, "bimestre": 2, "desde": "2027-01-04", "hasta": "2027-01-10",
+      "unidad": "Unidad 10: Metodologías ágiles",
+      "resultado": "Identifica la metodología de gestión de proyectos a utilizar en base a las características específicas de un problema.",
+      "contenidos": [
+        "10.1 Limitaciones del modelo en cascada.",
+        "10.2 El Manifiesto Ágil: valores y principios.",
+        "10.3 Diferencias clave entre enfoques predictivos y adaptativos.",
+        "10.4 Visión general de Scrum, Kanban, XP."
+      ],
+      "contacto": [
+        { "t": "Debate: cascada vs. ágil", "d": "Ejercicio de aplicación de los 12 principios ágiles a un proyecto." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s13p1", "t": "¿Se beneficiaría su proyecto de un enfoque ágil?", "d": "Según las características del proyecto del curso, determine y justifique los beneficios de un enfoque ágil." }
+      ],
+      "autonomo": [
+        { "id": "s13a1", "t": "Principios de agilidad", "d": "Lea el Manifiesto Ágil y sus 12 principios. Resumen de lectura: Sutherland (2014), Scrum.", "h": 3, "recursos": ["manifiesto","sutherland","rea7","rea6"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 14, "bimestre": 2, "desde": "2027-01-11", "hasta": "2027-01-17",
+      "unidad": "Unidad 10: Metodologías ágiles",
+      "resultado": "Conoce las principales fases y áreas de conocimientos de la gestión de proyectos.",
+      "contenidos": [
+        "10.5 Planificación de proyectos con Scrum.",
+        "10.6 Roles en Scrum: Product Owner, Scrum Master, equipo de desarrollo.",
+        "10.7 Artefactos de Scrum: Product Backlog, Sprint Backlog, incremento.",
+        "10.8 Eventos de Scrum: Sprint, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective.",
+        "10.9 Gestión de Sprints y el concepto de «Done».",
+        "10.10 Otras metodologías y principios: Kanban.",
+        "10.11 Scrum vs. Kanban."
+      ],
+      "contacto": [
+        { "t": "Simulación de una reunión de Sprint Planning", "d": "Planificación de un proyecto con el marco Scrum." },
+        { "t": "Tutoría", "d": "El docente propondrá ejercicios para identificar dudas." }
+      ],
+      "practico": [
+        { "id": "s14p1", "t": "Product Backlog inicial con al menos 10 historias de usuario", "d": "Planifique el alcance inicial de su proyecto con Scrum." }
+      ],
+      "autonomo": [
+        { "id": "s14a1", "t": "Dinámica de la planificación ágil", "d": "Lectura: Schwaber y Sutherland (2020), The Scrum Guide. Vea simulaciones de ceremonias Scrum.", "h": 3, "recursos": ["scrumguide","rea6"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 15, "bimestre": 2, "desde": "2027-01-18", "hasta": "2027-01-24",
+      "unidad": "El futuro de la gestión de proyectos: apoyo de la IA",
+      "resultado": "Conoce las principales metodologías para la gestión de proyectos.",
+      "contenidos": [
+        "Apoyo de la IA en la gestión de proyectos.",
+        "Aplicaciones de la IA en la gestión de proyectos (análisis predictivo, aprendizaje automático, procesamiento de lenguaje natural).",
+        "Herramientas de IA para la gestión de proyectos; análisis de casos de éxito.",
+        "Ingeniería de prompts para gestión de proyectos."
+      ],
+      "contacto": [
+        { "t": "IA generativa para planificación y seguimiento", "d": "Actividades en clase con IA generativa para optimizar la gestión de proyectos." },
+        { "t": "Tutoría", "d": "Aclare sus dudas sobre la asignatura." }
+      ],
+      "practico": [
+        { "id": "s15p1", "t": "Mejoras al proyecto del curso con IA generativa", "d": "Cada grupo presenta las mejoras obtenidas al aplicar IA generativa." }
+      ],
+      "autonomo": [
+        { "id": "s15a1", "t": "Valor y riesgos de la IA generativa en la dirección de proyectos", "d": "Investigue herramientas, experimente con prompts y guarde los resultados. Presente un documento y una presentación en clase.", "h": 3, "recursos": ["rea8"] }
+      ],
+      "evaluaciones": []
+    },
+    {
+      "n": 16, "bimestre": 2, "desde": "2027-01-25", "hasta": "2027-01-31",
+      "unidad": "Unidad 11: Enfoques híbridos (formas de trabajar)",
+      "resultado": "Identifica la metodología de gestión de proyectos a utilizar en base a las características específicas de un problema.",
+      "contenidos": [
+        "11.1 Combinando lo mejor de ambos mundos: modelos híbridos.",
+        "11.2 El rol del PM en entornos ágiles e híbridos.",
+        "11.3 Ejecución, monitoreo, control y cierre del proyecto.",
+        "11.4 Repaso general del curso y preparación para el examen final."
+      ],
+      "contacto": [
+        { "t": "Examen bimestral", "d": "" },
+        { "t": "Tutoría", "d": "El docente propondrá ejercicios para identificar dudas." }
+      ],
+      "practico": [
+        { "id": "s16p1", "t": "Exposición final del plan de proyecto", "d": "Presentaciones finales y sesión de preguntas y respuestas para el examen final." }
+      ],
+      "autonomo": [
+        { "id": "s16a1", "t": "Preparación para la evaluación final", "d": "Estudie para el examen final y prepare la presentación del proyecto.", "h": 3, "recursos": ["rea5"] }
+      ],
+      "evaluaciones": ["Examen bimestral"]
+    }
+  ],
+
+  "fechasImportantes": [
+    { "actividad": "Actividad presencial", "semana": 2, "desde": "2026-10-12", "hasta": "2026-10-18" },
+    { "actividad": "Prueba parcial", "semana": 4, "desde": "2026-10-26", "hasta": "2026-11-01" },
+    { "actividad": "Taller grupal", "semana": 4, "desde": "2026-10-26", "hasta": "2026-11-01" },
+    { "actividad": "Laboratorios", "semana": 5, "desde": "2026-11-02", "hasta": "2026-11-08" },
+    { "actividad": "Examen bimestral", "semana": 8, "desde": "2026-11-23", "hasta": "2026-11-29" },
+    { "actividad": "Escenarios experimentales", "semana": 8, "desde": "2026-11-23", "hasta": "2026-11-29" },
+    { "actividad": "Prueba parcial", "semana": 12, "desde": "2026-12-21", "hasta": "2027-01-03" },
+    { "actividad": "Examen bimestral", "semana": 16, "desde": "2027-01-25", "hasta": "2027-01-31" }
+  ],
+
+  "evaluacion": [
+    {
+      "bimestre": 1,
+      "componentes": [
+        { "nombre": "Aprendizaje en contacto con el docente", "porcentaje": 35, "items": [
+          { "actividad": "Prueba parcial", "instrumento": "Evaluaciones", "ponderacion": 10 },
+          { "actividad": "Actividad presencial", "instrumento": "Lista de control", "ponderacion": 5 },
+          { "actividad": "Examen bimestral", "instrumento": "Evaluaciones", "ponderacion": 20 }
+        ]},
+        { "nombre": "Aprendizaje práctico-experimental", "porcentaje": 35, "items": [
+          { "actividad": "Escenarios experimentales", "instrumento": "Trabajo de aplicación", "ponderacion": 10 },
+          { "actividad": "Taller grupal", "instrumento": "Evaluaciones", "ponderacion": 5 },
+          { "actividad": "Laboratorios", "instrumento": "Lista de control", "ponderacion": 20 }
+        ]},
+        { "nombre": "Aprendizaje autónomo", "porcentaje": 30, "items": [
+          { "actividad": "Tarea", "instrumento": "Textos escritos", "ponderacion": 10 },
+          { "actividad": "Preparación de exposiciones", "instrumento": "Lista de control", "ponderacion": 10 },
+          { "actividad": "Análisis y comprensión de material bibliográfico", "instrumento": "Investigación", "ponderacion": 10 }
+        ]}
+      ]
+    },
+    {
+      "bimestre": 2,
+      "componentes": [
+        { "nombre": "Aprendizaje en contacto con el docente", "porcentaje": 35, "items": [
+          { "actividad": "Foros", "instrumento": "Producción oral", "ponderacion": 2 },
+          { "actividad": "Clase presencial", "instrumento": "Producción oral", "ponderacion": 3 },
+          { "actividad": "Prueba parcial", "instrumento": "Evaluaciones", "ponderacion": 10 },
+          { "actividad": "Actividad presencial", "instrumento": "Lista de control", "ponderacion": 5 },
+          { "actividad": "Examen bimestral", "instrumento": "Evaluaciones", "ponderacion": 15 }
+        ]},
+        { "nombre": "Aprendizaje práctico-experimental", "porcentaje": 35, "items": [
+          { "actividad": "Taller grupal", "instrumento": "Rúbrica (formativa)", "ponderacion": 0 },
+          { "actividad": "Escenarios experimentales", "instrumento": "Rúbrica", "ponderacion": 25 },
+          { "actividad": "Talleres", "instrumento": "—", "ponderacion": 10 }
+        ]},
+        { "nombre": "Aprendizaje autónomo", "porcentaje": 30, "items": [
+          { "actividad": "Tarea", "instrumento": "Lista de control", "ponderacion": 10 },
+          { "actividad": "Análisis y comprensión de material bibliográfico", "instrumento": "Textos escritos", "ponderacion": 10 },
+          { "actividad": "Búsqueda de información", "instrumento": "Resolución de ejercicios", "ponderacion": 10 }
+        ]}
+      ]
+    }
+  ],
+
+  "politicas": [
+    {
+      "titulo": "Evaluación de recuperación",
+      "texto": "El estudiante que obtenga una calificación menor a 7 puntos en la nota total final podrá presentarse a la evaluación de recuperación. La ponderación de esta calificación será igual al 70% de la nota (7 puntos). Esta calificación será sumada a lo acumulado por el estudiante en el componente de “Aprendizaje autónomo”."
+    },
+    {
+      "titulo": "Adaptaciones curriculares",
+      "texto": "Para garantizar una educación de calidad acorde a las características del modelo educativo de la Universidad Técnica Particular de Loja, al principio de igualdad de oportunidades y a las necesidades educativas especiales asociadas o no a la discapacidad, se desarrollan adaptaciones curriculares no significativas o de grado dos que siguen una trayectoria de menor a mayor significación, considerando el aspecto metodológico, actividades de aprendizaje y el estilo individual de aprendizaje en cuanto a las estrategias a desarrollar. Estas adaptaciones se realizan en función de la identificación de las necesidades educativas en las primeras semanas de trabajo académico, con la finalidad de dar respuesta a la dificultad de aprendizaje y apoyar al desarrollo de las competencias del estudiante."
+    }
+  ]
+};
+
+</script>
+<!-- ======================= FIN DE DATOS ======================= -->
+  <script>
+/* Gestión de Proyectos · UTPL — lógica mínima, sin bibliotecas.
+   Lee window.SILABO (datos/silabo.js). Para probar otra fecha: index.html?hoy=2026-11-25T10:30 */
+(function () {
+  "use strict";
+  var S = window.SILABO;
+  if (!S) {
+    document.getElementById("proximo").innerHTML =
+      '<p class="vacio">No se pudo cargar el cronograma (datos/silabo.js). Consulte el plan docente en el aula virtual.</p>';
+    return;
+  }
+
+  var ZONA = "America/Guayaquil";
+  var CLAVE = "gp-admi5077-tareas-v1";
+  var ACCESO = {
+    abierto: "Acceso abierto",
+    biblioteca: "Biblioteca UTPL",
+    eva: "En el aula virtual",
+    verificar: "Enlace en revisión"
+  };
+
+  /* ---------- utilidades ---------- */
+  function $(id) { return document.getElementById(id); }
+  function esc(t) {
+    return String(t == null ? "" : t).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function normal(t) { return String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+  function aFecha(iso) { var p = iso.split("-"); return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], 12)); }
+  function aISO(d) { return d.toISOString().slice(0, 10); }
+  function sumarDias(iso, n) { var d = aFecha(iso); d.setUTCDate(d.getUTCDate() + n); return aISO(d); }
+  var fmtLargo = new Intl.DateTimeFormat("es-EC", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+  var fmtCorto = new Intl.DateTimeFormat("es-EC", { day: "numeric", month: "short", timeZone: "UTC" });
+  function largo(iso) { return fmtLargo.format(aFecha(iso)); }
+  function corto(iso) { return fmtCorto.format(aFecha(iso)).replace(".", ""); }
+  function rango(a, b) {
+    var anioA = a.slice(0, 4), anioB = b.slice(0, 4);
+    return corto(a) + (anioA !== anioB ? " " + anioA : "") + " – " + corto(b) + " " + anioB;
+  }
+  function minutos(hhmm) { var p = hhmm.split(":"); return +p[0] * 60 + +p[1]; }
+
+  /* Hora actual en Ecuador; admite ?hoy=AAAA-MM-DD o ?hoy=AAAA-MM-DDTHH:MM para pruebas */
+  function ahora() {
+    var q = new URLSearchParams(location.search).get("hoy");
+    if (q && /^\d{4}-\d{2}-\d{2}/.test(q)) {
+      var hm = (q.split("T")[1] || "08:00").slice(0, 5);
+      return { fecha: q.slice(0, 10), min: minutos(hm), simulada: true };
+    }
+    var partes = {};
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: ZONA, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date()).forEach(function (p) { partes[p.type] = p.value; });
+    return { fecha: partes.year + "-" + partes.month + "-" + partes.day, min: +partes.hour * 60 + +partes.minute, simulada: false };
+  }
+  function diaSemana(iso) { return aFecha(iso).getUTCDay(); } // 0 domingo … 1 lunes
+
+  var HOY = ahora();
+  var semanas = S.semanas;
+  var primera = semanas[0], ultima = semanas[semanas.length - 1];
+
+  function semanaDe(iso) {
+    for (var i = 0; i < semanas.length; i++) if (iso >= semanas[i].desde && iso <= semanas[i].hasta) return semanas[i];
+    return null;
+  }
+  var ACTUAL = semanaDe(HOY.fecha);
+  var ESTADO = ACTUAL ? "curso" : (HOY.fecha < primera.desde ? "antes" : "fin");
+  var REFERENCIA = ACTUAL || (ESTADO === "antes" ? primera : null);
+
+  function recurso(id) { for (var i = 0; i < S.recursos.length; i++) if (S.recursos[i].id === id) return S.recursos[i]; return null; }
+
+  /* ---------- almacenamiento local (solo recordatorio) ---------- */
+  var almacenOK = true, marcas = {};
+  try {
+    var crudo = localStorage.getItem(CLAVE);
+    marcas = crudo ? JSON.parse(crudo) || {} : {};
+  } catch (e) { almacenOK = false; marcas = {}; }
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify(marcas)); }
+    catch (e) { almacenOK = false; avisoAlmacen(); }
+  }
+  function avisoAlmacen() {
+    if (almacenOK || $("aviso-almacen")) return;
+    var p = document.createElement("p");
+    p.id = "aviso-almacen"; p.className = "aviso";
+    p.textContent = "Este navegador no permite guardar las marcas: se perderán al cerrar la página.";
+    $("resumen-tareas").before(p);
+  }
+  function tareasDe(s) { return s.practico.concat(s.autonomo); }
+  function todasLasTareas() { var t = []; semanas.forEach(function (s) { t = t.concat(tareasDe(s)); }); return t; }
+  function hechas(lista) { return lista.filter(function (t) { return marcas[t.id]; }).length; }
+
+  /* ---------- próxima sesión y evaluación ---------- */
+  function proximaSesion() {
+    var inicio = HOY.fecha < primera.desde ? primera.desde : HOY.fecha;
+    for (var k = 0; k < 21; k++) {
+      var dia = sumarDias(inicio, k);
+      if (dia > ultima.hasta) return null;
+      var dw = diaSemana(dia);
+      var sesiones = S.horario.filter(function (h) { return h.dia === dw; })
+        .sort(function (a, b) { return minutos(a.inicio) - minutos(b.inicio); });
+      for (var j = 0; j < sesiones.length; j++) {
+        var h = sesiones[j];
+        if (dia === HOY.fecha && minutos(h.fin) <= HOY.min) continue;
+        var enCurso = dia === HOY.fecha && minutos(h.inicio) <= HOY.min;
+        return { dia: dia, h: h, enCurso: enCurso };
+      }
+    }
+    return null;
+  }
+  function proximasEvaluaciones() {
+    var futuras = S.fechasImportantes.filter(function (f) { return f.hasta >= HOY.fecha; });
+    if (!futuras.length) return null;
+    var sem = futuras[0].semana;
+    return futuras.filter(function (f) { return f.semana === sem; });
+  }
+
+  /* ---------- 1 · Lo próximo ---------- */
+  function pintarProximo() {
+    var cont = $("proximo"), html = "";
+    if (HOY.simulada) html += '<p class="chip chip--evaluacion">Fecha simulada para pruebas: ' + esc(largo(HOY.fecha)) + "</p>";
+
+    if (ESTADO === "fin") {
+      html += '<p class="proximo__semana">Semestre concluido</p>' +
+        "<p>Las clases terminaron el " + esc(largo(ultima.hasta)) + ". Revise sus calificaciones y avisos de recuperación en el aula virtual.</p>";
+      cont.innerHTML = html; return;
+    }
+    var s = REFERENCIA;
+    var pendientes = tareasDe(s).length - hechas(tareasDe(s));
+    html += '<p class="proximo__semana">' + (ESTADO === "antes" ? "Empieza pronto" : "Semana " + s.n + " <small>de " + semanas.length + "</small>") + "</p>";
+    html += '<p class="proximo__unidad">' + (ESTADO === "antes" ? "Semana 1 · " : "") + esc(s.unidad) +
+      ' <span class="semana__fechas">(' + esc(rango(s.desde, s.hasta)) + ")</span></p>";
+    html += '<div class="proximo__rejilla">';
+
+    var ses = proximaSesion();
+    if (ses) {
+      html += '<div class="dato dato--clave"><span class="dato__rotulo">' + (ses.enCurso ? "En curso ahora" : "Próxima sesión") + "</span>" +
+        '<span class="dato__valor">' + esc(ses.h.tipo) + " · " + esc(largo(ses.dia)) + ", " + esc(ses.h.inicio) + "–" + esc(ses.h.fin) + "</span>" +
+        "<span>" + esc(ses.h.lugar) + "</span></div>";
+    }
+    if (s.practico[0]) {
+      html += '<div class="dato"><span class="dato__rotulo">Práctica de la semana</span><span class="dato__valor">' + esc(s.practico[0].t) + "</span>" +
+        "<span>" + (pendientes ? pendientes + " de " + tareasDe(s).length + " actividades sin marcar en su lista" : "Todas las actividades marcadas en su lista") + "</span></div>";
+    }
+    var ev = proximasEvaluaciones();
+    if (ev) {
+      var f = ev[0], estaSemana = f.desde <= HOY.fecha;
+      html += '<div class="dato dato--clave"><span class="dato__rotulo">' + (estaSemana ? "Evaluación esta semana" : "Próxima evaluación") + "</span>" +
+        '<span class="dato__valor">' + esc(ev.map(function (e) { return e.actividad; }).join(" y ")) + "</span>" +
+        "<span>Semana " + f.semana + " · " + esc(rango(f.desde, f.hasta)) + "</span></div>";
+    }
+    html += "</div>";
+    html += '<p class="panel__pie"><a href="#semana-' + s.n + '" data-abrir="' + s.n + '">Ver todo lo de la semana ' + s.n + "</a></p>";
+    cont.innerHTML = html;
+  }
+
+  /* ---------- recursos ---------- */
+  function recursoHTML(r) {
+    var titulo = r.url
+      ? '<a class="recurso__titulo" href="' + esc(r.url) + '">' + esc(r.titulo) + "</a>"
+      : '<span class="recurso__titulo">' + esc(r.titulo) + "</span>";
+    var sem = r.semanas.length ? "Semana " + r.semanas.join(", ") : "Consulta general";
+    return '<li class="recurso">' + titulo +
+      '<span class="recurso__meta">' + esc(r.autor) + " · " + esc(r.tipo) + " · " + esc(sem) + "</span>" +
+      '<span class="acceso acceso--' + esc(r.acceso) + '">' + esc(ACCESO[r.acceso] || r.acceso) + "</span>" +
+      (r.nota ? '<span class="recurso__nota">' + esc(r.nota) + "</span>" : "") + "</li>";
+  }
+  function filtrarRecursos(texto, acceso) {
+    var q = normal(texto || "").trim();
+    var m = q.match(/semana\s*(\d+)/);
+    var numSem = m ? +m[1] : null;
+    var resto = m ? q.replace(m[0], "").trim() : q;
+    return S.recursos.filter(function (r) {
+      if (acceso && acceso !== "todos" && r.acceso !== acceso) return false;
+      if (numSem && r.semanas.indexOf(numSem) < 0) return false;
+      if (!resto) return true;
+      return normal(r.titulo + " " + r.autor + " " + r.tipo + " " + r.nota).indexOf(resto) >= 0;
+    });
+  }
+
+  var filtroAcceso = "todos";
+  function pintarRecursos() {
+    var lista = filtrarRecursos($("buscar").value, filtroAcceso);
+    $("lista-recursos").innerHTML = lista.length ? lista.map(recursoHTML).join("")
+      : '<li class="vacio">Ningún recurso coincide. Pruebe con otra palabra o elija «Todos».</li>';
+    $("conteo-recursos").textContent = lista.length + (lista.length === 1 ? " recurso" : " recursos");
+  }
+  function pintarFiltrosAcceso() {
+    var opciones = [["todos", "Todos"]].concat(Object.keys(ACCESO).map(function (k) { return [k, ACCESO[k]]; }));
+    $("filtros-acceso").innerHTML = opciones.map(function (o) {
+      return '<button type="button" class="filtro" data-acceso="' + o[0] + '" aria-pressed="' + (o[0] === filtroAcceso) + '">' + esc(o[1]) + "</button>";
+    }).join("");
+  }
+  function pintarBusquedaRapida() {
+    var q = $("buscar-rapido").value.trim(), ul = $("resultados-rapidos");
+    if (!q) {
+      var s = REFERENCIA;
+      var ids = s ? [].concat.apply([], s.autonomo.map(function (a) { return a.recursos; })) : [];
+      var propias = ids.filter(function (v, i) { return ids.indexOf(v) === i; }).map(recurso).filter(Boolean);
+      ul.innerHTML = propias.length
+        ? '<li class="conteo">Lecturas de la semana ' + s.n + ":</li>" + propias.slice(0, 4).map(recursoHTML).join("")
+        : (s ? '<li class="conteo">La semana ' + s.n + ' no tiene lecturas asignadas. Busque por título, autor o «semana N».</li>' : "");
+      return;
+    }
+    var r = filtrarRecursos(q, "todos");
+    ul.innerHTML = r.length ? r.slice(0, 5).map(recursoHTML).join("") +
+      (r.length > 5 ? '<li class="conteo">y ' + (r.length - 5) + " más en «Lecturas y recursos».</li>" : "")
+      : '<li class="vacio">Sin resultados para «' + esc(q) + '». Pruebe «PMBOK», «Scrum» o «semana 3».</li>';
+  }
+
+  /* ---------- contacto ---------- */
+  function horarioHTML() {
+    return '<ul class="horario">' + S.horario.map(function (h) {
+      return '<li><span class="horario__tipo">' + esc(h.tipo) + "</span> · " + esc(h.diaNombre) + " " + esc(h.inicio) + "–" + esc(h.fin) +
+        "<br><span class=\"actividad__detalle\">" + esc(h.lugar) + "</span></li>";
+    }).join("") + "</ul>";
+  }
+  function pintarContacto() {
+    var d = S.docentes[0], tut = S.horario.filter(function (h) { return h.tipo === "Tutoría"; })[0];
+    $("contacto-rapido").innerHTML =
+      '<p class="dato__valor">' + esc(d.nombre) + "</p>" +
+      '<p><a href="mailto:' + esc(d.correo) + '?subject=' + encodeURIComponent("[ADMI_5077] ") + '">Escribir a ' + esc(d.correo) + "</a></p>" +
+      (tut ? "<p>Tutoría: " + esc(tut.diaNombre) + " " + esc(tut.inicio) + "–" + esc(tut.fin) + ", " + esc(tut.lugar) + ".</p>" : "");
+
+    var docentes = S.docentes.map(function (x) {
+      return '<article class="panel"><h3 class="panel__titulo">' + esc(x.nombre) + "</h3>" +
+        '<p class="actividad__detalle">' + esc(x.rol) + " · " + esc(x.titulo) + "</p>" +
+        '<p><a href="mailto:' + esc(x.correo) + '?subject=' + encodeURIComponent("[ADMI_5077] ") + '">' + esc(x.correo) + "</a></p></article>";
+    }).join("");
+    $("contacto-completo").innerHTML = docentes +
+      '<article class="panel"><h3 class="panel__titulo">Horario del paralelo ' + esc(S.curso.paralelo) + "</h3>" + horarioHTML() + "</article>" +
+      '<article class="panel"><h3 class="panel__titulo">Canal oficial</h3><p>' + esc(S.canalOficial) +
+      ".</p><p class=\"actividad__detalle\">Escriba desde su correo institucional e indique el código ADMI_5077 en el asunto. Las tutorías por Zoom usan el enlace publicado en el aula virtual.</p></article>";
+  }
+
+  /* ---------- línea del semestre ---------- */
+  function pintarLinea() {
+    var conEval = {};
+    S.fechasImportantes.forEach(function (f) { conEval[f.semana] = true; });
+    var html = '<p class="linea__bimestre linea__bimestre--1">Primer bimestre</p>';
+    semanas.forEach(function (s, i) {
+      if (i === 8) html += '<p class="linea__bimestre linea__bimestre--2">Segundo bimestre</p>';
+      var clases = "linea__semana";
+      if (s.hasta < HOY.fecha) clases += " linea__semana--pasada";
+      if (ACTUAL && ACTUAL.n === s.n) clases += " linea__semana--actual";
+      if (conEval[s.n]) clases += " linea__semana--evaluacion";
+      var etiqueta = "Semana " + s.n + ", " + rango(s.desde, s.hasta) + ", " + s.unidad +
+        (conEval[s.n] ? ", con evaluación" : "") + (ACTUAL && ACTUAL.n === s.n ? ", semana actual" : "");
+      html += '<a class="' + clases + '" href="#semana-' + s.n + '" data-abrir="' + s.n + '" aria-label="' + esc(etiqueta) + '"' +
+        (ACTUAL && ACTUAL.n === s.n ? ' aria-current="date"' : "") + ">" +
+        "<strong>" + s.n + "</strong><span>" + esc(corto(s.desde)) + '</span><span class="linea__barra"></span></a>';
+    });
+    $("linea-semestre").innerHTML = html;
+  }
+
+  /* ---------- cronograma ---------- */
+  function casilla(t) {
+    return '<label class="casilla"><input type="checkbox" data-tarea="' + esc(t.id) + '"' + (marcas[t.id] ? " checked" : "") + ">" +
+      '<span><span class="actividad__titulo">' + esc(t.t) + "</span>" +
+      (t.d ? '<span class="actividad__detalle">' + esc(t.d) + "</span>" : "") +
+      (t.h ? '<span class="actividad__horas">' + String(t.h).replace(".", ",") + (t.h === 1 ? " hora" : " horas") + "</span>" : "") +
+      "</span></label>";
+  }
+  function recursosDe(t) {
+    if (!t.recursos || !t.recursos.length) return "";
+    return '<div class="actividad__recursos">Lecturas: ' + t.recursos.map(function (id) {
+      var r = recurso(id); if (!r) return "";
+      var nombre = r.url ? '<a href="' + esc(r.url) + '">' + esc(r.titulo) + "</a>" : esc(r.titulo);
+      return nombre + ' <span class="acceso acceso--' + esc(r.acceso) + '">' + esc(ACCESO[r.acceso]) + "</span>";
+    }).join("; ") + "</div>";
+  }
+  function pintarSemanas() {
+    $("semanas").innerHTML = semanas.map(function (s) {
+      var esActual = ACTUAL && ACTUAL.n === s.n;
+      var t = tareasDe(s);
+      var marcasHTML =
+        (esActual ? '<span class="chip chip--hoy">Esta semana</span>' : "") +
+        s.evaluaciones.map(function (e) { return '<span class="chip chip--evaluacion">' + esc(e) + "</span>"; }).join("") +
+        '<span class="chip chip--progreso" data-progreso="' + s.n + '">' + hechas(t) + "/" + t.length + " marcadas</span>" +
+        (s.n === 12 ? '<span class="chip">Dos semanas de calendario</span>' : "");
+      return '<details class="semana' + (esActual ? " semana--actual" : "") + '" id="semana-' + s.n + '" data-bimestre="' + s.bimestre + '"' + (esActual ? " open" : "") + ">" +
+        "<summary>" +
+        '<span class="semana__num" aria-hidden="true">' + s.n + "</span>" +
+        '<span class="semana__fechas"><span class="oculto">Semana ' + s.n + ", </span>" + esc(largo(s.desde)) + " al " + esc(largo(s.hasta)) + "</span>" +
+        '<span class="semana__unidad">' + esc(s.unidad) + "</span>" +
+        '<span class="semana__marcas">' + marcasHTML + "</span>" +
+        "</summary>" +
+        '<div class="semana__cuerpo">' +
+        '<p class="semana__resultado">Resultado de aprendizaje: ' + esc(s.resultado) + "</p>" +
+        "<h4>Contenidos</h4><ul class=\"contenidos\">" + s.contenidos.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>" +
+        '<div class="bloques">' +
+        "<div><h4>En clase y tutoría (2 h)</h4><ul class=\"actividades\">" + s.contacto.map(function (c) {
+          return '<li><span class="actividad__titulo">' + esc(c.t) + "</span>" + (c.d ? '<span class="actividad__detalle">' + esc(c.d) + "</span>" : "") + "</li>";
+        }).join("") + "</ul></div>" +
+        "<div><h4>Práctica en equipo (1 h)</h4><ul class=\"actividades\">" + s.practico.map(function (p) { return "<li>" + casilla(p) + "</li>"; }).join("") + "</ul></div>" +
+        "<div><h4>Trabajo autónomo (3 h)</h4><ul class=\"actividades\">" + s.autonomo.map(function (a) { return "<li>" + casilla(a) + recursosDe(a) + "</li>"; }).join("") + "</ul></div>" +
+        "</div></div></details>";
+    }).join("");
+  }
+
+  /* ---------- mis tareas ---------- */
+  function pintarTareas() {
+    var todas = todasLasTareas(), h = hechas(todas), pct = Math.round(h / todas.length * 100);
+    $("resumen-tareas").innerHTML =
+      "<p><strong>" + h + " de " + todas.length + "</strong> actividades marcadas en este navegador.</p>" +
+      '<div class="progreso" role="img" aria-label="' + pct + ' por ciento marcado"><div class="progreso__barra" style="width:' + pct + '%"></div></div>';
+    var s = REFERENCIA;
+    if (!s) { $("tareas-semana").innerHTML = '<p class="vacio">El semestre terminó. Sus marcas siguen en el cronograma.</p>'; return; }
+    var sig = semanas[s.n] || null;
+    function bloque(x, titulo) {
+      return '<article class="panel" style="margin-bottom:1rem"><h3 class="panel__titulo">' + titulo + "</h3>" +
+        '<ul class="actividades">' + tareasDe(x).map(function (t) { return "<li>" + casilla(t) + "</li>"; }).join("") + "</ul></article>";
+    }
+    $("tareas-semana").innerHTML = bloque(s, "Semana " + s.n + " · " + esc(rango(s.desde, s.hasta))) +
+      (sig ? bloque(sig, "Para adelantar: semana " + sig.n + " · " + esc(rango(sig.desde, sig.hasta))) : "");
+    avisoAlmacen();
+  }
+  function actualizarProgresos() {
+    semanas.forEach(function (s) {
+      var el = document.querySelector('[data-progreso="' + s.n + '"]');
+      if (el) el.textContent = hechas(tareasDe(s)) + "/" + tareasDe(s).length + " marcadas";
+    });
+    var todas = todasLasTareas(), h = hechas(todas), pct = Math.round(h / todas.length * 100);
+    var r = $("resumen-tareas");
+    r.querySelector("strong").textContent = h + " de " + todas.length;
+    r.querySelector(".progreso").setAttribute("aria-label", pct + " por ciento marcado");
+    r.querySelector(".progreso__barra").style.width = pct + "%";
+    pintarProximo();
+  }
+
+  /* ---------- evaluación y políticas ---------- */
+  function pintarEvaluacion() {
+    $("fechas").innerHTML = '<h3 class="oculto">Fechas importantes</h3>' + S.fechasImportantes.map(function (f) {
+      return '<div class="fecha' + (f.hasta < HOY.fecha ? " fecha--pasada" : "") + '"><span class="fecha__actividad">' + esc(f.actividad) + "</span>" +
+        '<span class="fecha__rango">Semana ' + f.semana + " · " + esc(rango(f.desde, f.hasta)) + "</span></div>";
+    }).join("") +
+      '<p class="actividad__detalle" style="grid-column:1/-1">Las demás actividades del segundo bimestre (foros, clase presencial, escenarios experimentales, talleres) se programan en el aula virtual.</p>';
+    $("pesos").innerHTML = S.evaluacion.map(function (b) {
+      return '<article class="panel"><h3>' + (b.bimestre === 1 ? "Primer" : "Segundo") + " bimestre</h3>" +
+        b.componentes.map(function (c) {
+          return '<div class="componente"><div class="componente__nombre"><span>' + esc(c.nombre) + "</span><span>" + c.porcentaje + " %</span></div><ul>" +
+            c.items.map(function (i) {
+              return "<li><span>" + esc(i.actividad) + "<small>" + esc(i.instrumento) + "</small></span><span>" +
+                (i.ponderacion ? i.ponderacion + " %" : "formativa") + "</span></li>";
+            }).join("") + "</ul></div>";
+        }).join("") + "</article>";
+    }).join("");
+  }
+  function pintarPoliticas() {
+    $("lista-politicas").innerHTML = S.politicas.map(function (p) {
+      return '<article class="politica"><h3>' + esc(p.titulo) + "</h3><blockquote><p>" + esc(p.texto) + "</p></blockquote></article>";
+    }).join("");
+    $("resultados").innerHTML = S.resultadosAprendizaje.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("");
+  }
+  function pintarCabecera() {
+    var c = S.curso;
+    $("titulo-curso").textContent = c.nombre;
+    $("carrera").textContent = c.carrera + " · " + c.nivel + " nivel · " + c.modalidad;
+    $("meta-curso").textContent = c.codigo + " · Paralelo " + c.paralelo + " · " + c.periodo;
+    $("fuente").textContent = "Fuente: " + S.fuente + " Datos versión " + S.version + ", actualizados el " + largo(S.actualizado) + ". Fechas en " + c.zonaHoraria + ".";
+  }
+
+  /* ---------- interacción ---------- */
+  function abrirSemana(n, enfocar) {
+    var d = $("semana-" + n);
+    if (!d) return;
+    if (d.hidden) aplicarBimestre("todos");
+    d.open = true;
+    if (enfocar) { d.querySelector("summary").focus({ preventScroll: true }); d.scrollIntoView(); }
+  }
+  function aplicarBimestre(b) {
+    document.querySelectorAll("[data-bimestre]").forEach(function (el) {
+      if (el.tagName === "BUTTON") el.setAttribute("aria-pressed", String(el.dataset.bimestre === b));
+      else el.hidden = !(b === "todos" || el.dataset.bimestre === b);
+    });
+  }
+
+  document.addEventListener("change", function (e) {
+    var id = e.target.dataset && e.target.dataset.tarea;
+    if (!id) return;
+    if (e.target.checked) marcas[id] = true; else delete marcas[id];
+    document.querySelectorAll('[data-tarea="' + id + '"]').forEach(function (c) { c.checked = e.target.checked; });
+    guardar();
+    actualizarProgresos();
+  });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("[data-abrir]");
+    if (a) { e.preventDefault(); history.replaceState(null, "", "#semana-" + a.dataset.abrir); abrirSemana(a.dataset.abrir, true); return; }
+    var b = e.target.closest("button[data-bimestre]");
+    if (b) { aplicarBimestre(b.dataset.bimestre); return; }
+    var f = e.target.closest("button[data-acceso]");
+    if (f) { filtroAcceso = f.dataset.acceso; pintarFiltrosAcceso(); pintarRecursos(); return; }
+  });
+  $("reiniciar").addEventListener("click", function () {
+    if (!confirm("¿Borrar todas las marcas de este navegador? Esto no afecta sus entregas en el aula virtual.")) return;
+    marcas = {};
+    try { localStorage.removeItem(CLAVE); } catch (e) { /* sin almacenamiento */ }
+    document.querySelectorAll("[data-tarea]").forEach(function (c) { c.checked = false; });
+    actualizarProgresos();
+  });
+  $("buscar").addEventListener("input", pintarRecursos);
+  $("buscar-rapido").addEventListener("input", pintarBusquedaRapida);
+  window.addEventListener("hashchange", function () {
+    var m = location.hash.match(/^#semana-(\d+)$/);
+    if (m) abrirSemana(m[1], false);
+  });
+
+  /* ---------- arranque ---------- */
+  pintarCabecera();
+  pintarSemanas();
+  pintarTareas();
+  pintarProximo();
+  pintarContacto();
+  pintarLinea();
+  pintarFiltrosAcceso();
+  pintarRecursos();
+  pintarBusquedaRapida();
+  pintarEvaluacion();
+  pintarPoliticas();
+  var m = location.hash.match(/^#semana-(\d+)$/);
+  if (m) abrirSemana(m[1], true);
+})();
+
+</script>
 </body>
 </html>
